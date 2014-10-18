@@ -1,7 +1,7 @@
 /**
   * Module dependencies.
   */
-var Upload = require('ember-upload-to')('/upload');
+var Upload = require('ember-upload')('/upload');
 var DropView = Upload.DropView;
 var ProgressView = Upload.ProgressView;
 

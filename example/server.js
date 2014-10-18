@@ -1,7 +1,7 @@
 /**
   * Module dependencies.
   */
-var express = require('component-hooks/node_modules/express');
+var express = require('express');
 var build = require('./build');
 
 // app
@@ -11,7 +11,7 @@ var app = express();
 // middleware
 
 app.use(express.favicon());
-app.use(express.logger('dev'));
+// app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
