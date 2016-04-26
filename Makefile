@@ -1,4 +1,7 @@
-example:
-	@$(MAKE) --no-print-directory -C example -B
+default:
+	@$(MAKE) --no-print-directory -C example
 
-.PHONY: find example
+example: default
+	@xdg-open example/index.html
+
+.PHONY: default

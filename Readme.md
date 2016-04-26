@@ -1,3 +1,4 @@
+### File upload and progress components
 
 ![](https://dl.dropbox.com/u/30162278/ember-upload.png) 
 
@@ -16,18 +17,47 @@ Use
 ---
 
 ```javascript
-var Upload = require('ember-upload')('/upload-path');
-Upload.addObserver('upload.progress', function(){
-  var progress = this.get('upload.progress');
-  console.log(progress);
+
+/**
+  * Module dependencies.
+  */
+var upload = require('ember-upload');
+var App = Em.Application.create();
+
+App.FileDropComponent = Em.Component.extend(upload.drop, {
+
+  getUploadOptions: function(){
+    return {
+      url: '/upload',
+    };
+  },
+
+  onProgress: function(){
+
+    var progress = this.get('upload.progress');
+    console.log(progress);
+
+  }.observes('upload.progress'),
+
+  onLoadEnd: function(){
+
+    var event = this.get('upload.loadend.currentTarget.responseText');
+    console.log(event);
+
+  }.observes('upload.loadend'),
+
 });
+
+App.FileProgressComponent = Em.Component.extend(upload.progress);
+
 ```
 
 ```html
-{{view Upload.ProgressView}}
-{{#view Upload.DropView}}
-  Upload or Drop files here
-{{/view}}
+{{#file-drop upload=upload}}
+drop zone
+{{/file-drop}}
+
+{{file-progress upload=upload}}
 ```
 
 S3 example:
@@ -35,7 +65,7 @@ S3 example:
 ```javascript
 
 var upload = require('ember-upload');
-var slug = require('slug'); // yields/slug
+var uid = require('node-uuid');
 
 var S3 = {
   policy: '',
@@ -44,20 +74,22 @@ var S3 = {
   acl: 'public-read',
   bucket: '',
   region: 's3-us-west-2'
-   
 };
 
 S3.url = 'http://'+S3.bucket+'.'+S3.region+'.amazonaws.com/';
 S3.staticUrl = 'https://'+S3.region+'.amazonaws.com/'+S3.bucket+'/';
 
-App.UploadView = Em.View.extend({
+App.FileDropComponent = Em.Component.extend(upload.drop, {
+  
+  // generate for every upload
+  getUploadOptions: function(){
 
-  init: function(){
+    return {
 
-    var self = this;
-    var key = slug((new Date).toISOString());
-    var opts = {
-      'key': key,
+      url: S3.url,
+
+      // sent in form data
+      'key': uid.v4(),
       'AWSAccessKeyId': S3.key,
       'acl': S3.acl,
       'policy': S3.policy,
@@ -65,17 +97,24 @@ App.UploadView = Em.View.extend({
       'Content-Type': 'application/octet-stream'
     };
 
-    this.upload = upload(S3.url, opts);
-    this.upload.addObserver('upload.loadend', function(){
-      Em.run.later(function(){
-        var path = S3.staticUrl + key;
-        console.log('S3 path: %s', path);
-      }, 2000);
-    });
+  },
 
-    this._super();
+  onProgress: function(){
 
-  }
+    var progress = this.get('upload.progress');
+    console.log(progress);
+
+  }.observes('upload.progress'),
+
+  onLoadEnd: function(){
+
+    Em.run.later(function(){
+      var path = S3.staticUrl + this.get('upload.opts.key');
+      console.log('upload to path: %s', path);
+    }, 1000);
+
+  }.observes('upload.loadend'),
+
 });
 
 ```
@@ -83,7 +122,8 @@ App.UploadView = Em.View.extend({
 Todo
 ---
 
-X-browser.
+- X-browser.
+- Ember CLI
 
 License
 ---

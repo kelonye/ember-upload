@@ -5,12 +5,15 @@
   ],
   "paths": [
     ".",
-    "../.."
+    "../../.."
   ],
   "scripts": [
     "index.js"
   ],
   "styles": [
     "style.css"
+  ],
+  "jhbs": [
+    "template"
   ]
 }

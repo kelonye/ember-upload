@@ -4,7 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 var builder = require('component-hooks');
-var cwd = path.join(__dirname);
+var cwd = path.join(__dirname, 'client');
 var out = path.join(__dirname, '/public');
 
 // exec

@@ -1,10 +1,13 @@
-run: node_modules components
-	@node server.js
+component = ./node_modules/.bin/component
+
+run: node_modules client/components
+	@mkdir -p tmp
+	node server.js
 
 node_modules:
-	@npm i --dev
+	@npm install
 
-components:
-	@./node_modules/component-hooks/node_modules/.bin/component install --dev
+client/components:
+	@$(MAKE) --no-print-directory -C client -B
 
 .PHONY: run

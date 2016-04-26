@@ -1,5 +1,6 @@
 syntax: glob
 
+tmp
 public
 components
 node_modules
