@@ -1,10 +1,10 @@
 {
   "name": "ember-upload",
-  "version": "2.5.0",
+  "version": "2.11.0",
   "description": "File uploads component",
   "dependencies": {
-    "kelonye/ember": "2.5.0",
-    "kelonye/ember-progress": "2.5.0",
+    "kelonye/ember": "2.11.0",
+    "kelonye/ember-progress": "2.11.0",
     "component/file-picker": "0.2.0"
   },
   "styles": [

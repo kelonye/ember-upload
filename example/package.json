@@ -4,7 +4,7 @@
   "dependencies": {},
   "devDependencies": {
     "body-parser": "^1.15.0",
-    "component-hooks": "^0.4.1",
+    "component-hooks": "^0.4.3",
     "express": "^4.13.4",
     "multer": "^1.1.0",
     "serve-static": "^1.10.2"
